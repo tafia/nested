@@ -13,7 +13,7 @@ use nested::Nested;
 /// In general, you don't want to return a whole String but you prefer
 /// working with a Read or BufRead directly.
 fn src_lib() -> String {
-    use std::io::{Read, BufReader};
+    use std::io::{BufReader, Read};
     let mut file = BufReader::new(::std::fs::File::open("src/lib.rs").unwrap());
     let mut res = String::new();
     file.read_to_string(&mut res).unwrap();
@@ -24,7 +24,9 @@ fn src_lib() -> String {
 fn bench_vec_string(b: &mut Bencher) {
     let src = src_lib();
     b.iter(|| {
-        let words = src.split_whitespace().map(|s| s.to_string()).collect::<Vec<_>>();
+        let words = src.split_whitespace()
+            .map(|s| s.to_string())
+            .collect::<Vec<_>>();
         assert!(words.len() > 1000)
     });
 }
@@ -42,7 +44,9 @@ fn bench_nested_string(b: &mut Bencher) {
 fn bench_vec_string_iter(b: &mut Bencher) {
     let src = src_lib();
     b.iter(|| {
-        let words = src.split_whitespace().map(|s| s.to_string()).collect::<Vec<_>>();
+        let words = src.split_whitespace()
+            .map(|s| s.to_string())
+            .collect::<Vec<_>>();
         assert!(words.len() > 1000);
         let words_with_a = words.iter().filter(|w| w.contains('a')).count();
         assert!(words_with_a > 100)

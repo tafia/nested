@@ -37,7 +37,7 @@
 //! assert_eq!(v.pop(), Some("a".to_string()));
 //! assert_eq!(v.pop(), None);
 //! ```
-use std::ops::{Range, Index};
+use std::ops::{Index, Range};
 use std::iter::{repeat, FromIterator};
 
 /// A `Nested` item when `T: Collection`
@@ -103,7 +103,7 @@ impl Collection for String {
 ///
 /// `T` is the owning underlying container.
 ///
-/// For instance, it behaves similarly to `Vec<Vec<T>>` or `Vec<String>` but 
+/// For instance, it behaves similarly to `Vec<Vec<T>>` or `Vec<String>` but
 /// only has 2 internal buffers.
 ///
 /// It can be used:
@@ -113,7 +113,7 @@ impl Collection for String {
 #[derive(Debug, Clone, PartialEq, Hash, Eq)]
 pub struct Nested<T> {
     indices: Vec<usize>,
-    data: T
+    data: T,
 }
 
 impl<T: Collection> Nested<T> {
@@ -218,7 +218,7 @@ impl<T: Collection> Nested<T> {
     pub fn iter(&self) -> Iter<T> {
         Iter {
             windows: self.indices.windows(2),
-            data: &self.data
+            data: &self.data,
         }
     }
 
@@ -259,8 +259,9 @@ impl<T: Collection> Index<usize> for Nested<T> {
 
 impl<T: Collection, A: AsRef<Item<T>>> Extend<A> for Nested<T> {
     fn extend<I>(&mut self, iter: I)
-        where I: IntoIterator,
-              I::Item: AsRef<Item<T>>,
+    where
+        I: IntoIterator,
+        I::Item: AsRef<Item<T>>,
     {
         for i in iter.into_iter() {
             self.push(i);
@@ -293,7 +294,9 @@ impl<'a, T: Collection> ExactSizeIterator for Iter<'a, T> {
 
 impl<'a, T: Collection> DoubleEndedIterator for Iter<'a, T> {
     fn next_back(&mut self) -> Option<<Self as Iterator>::Item> {
-        self.windows.next_back().map(|w| self.data.index(w[0]..w[1]))
+        self.windows
+            .next_back()
+            .map(|w| self.data.index(w[0]..w[1]))
     }
 }
 
@@ -302,7 +305,7 @@ impl<T: Collection, A: AsRef<Item<T>>> FromIterator<A> for Nested<T> {
         let iter = iter.into_iter();
         let mut v = match iter.size_hint() {
             (0, None) => Nested::new(),
-            (_, Some(l)) | (l, None)=> Nested::with_capacity(l, l * 4),
+            (_, Some(l)) | (l, None) => Nested::with_capacity(l, l * 4),
         };
         v.extend(iter);
         v
@@ -349,7 +352,12 @@ mod tests {
 
     #[test]
     fn test_collect() {
-        let sce = vec!["a".to_string(), "b".to_string(), "c".to_string(), "d".to_string()];
+        let sce = vec![
+            "a".to_string(),
+            "b".to_string(),
+            "c".to_string(),
+            "d".to_string(),
+        ];
         let v = sce.iter().collect::<Nested<String>>();
         assert_eq!(v.len(), 4);
         assert_eq!(&v[0], "a");
@@ -364,7 +372,12 @@ mod tests {
 
     #[test]
     fn test_iter() {
-        let sce = vec!["a".to_string(), "b".to_string(), "c".to_string(), "d".to_string()];
+        let sce = vec![
+            "a".to_string(),
+            "b".to_string(),
+            "c".to_string(),
+            "d".to_string(),
+        ];
         let v = sce.iter().collect::<Nested<String>>();
         let new_sce = v.iter().map(|s| s.to_string()).collect::<Vec<_>>();
         assert_eq!(sce, new_sce);
