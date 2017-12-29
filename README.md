@@ -1,5 +1,8 @@
 # nested
 
+[![Build Status](https://travis-ci.org/tafia/nested.svg?branch=master)](https://travis-ci.org/tafia/nested)
+[![Crate](http://meritbadge.herokuapp.com/nested)](https://crates.io/crates/nested)
+
 A memory efficient container for nested collections.
 
 This crate is intended to be used when:
