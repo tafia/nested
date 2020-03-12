@@ -214,6 +214,25 @@ impl<T: Collection> Nested<T> {
         }
     }
 
+    /// Converts this `Nested` into its constituent parts.
+    pub fn into_parts(self) -> (Vec<usize>, T) {
+        (self.indices, self.data)
+    }
+
+    /// Returns a reference to the underlying indices.
+    ///
+    /// Each index represents the start of each logical vector beyond the first one.
+    pub fn indices(&self) -> &[usize] {
+        &self.indices
+    }
+
+    /// Returns a reference to the underlying data.
+    ///
+    /// The data is stored contiguously.
+    pub fn data(&self) -> &T {
+        &self.data
+    }
+
     /// Returns an iterator over `Nested` elements.
     pub fn iter(&self) -> Iter<T> {
         Iter {
