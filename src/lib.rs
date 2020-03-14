@@ -37,8 +37,8 @@
 //! assert_eq!(v.pop(), Some("a".to_string()));
 //! assert_eq!(v.pop(), None);
 //! ```
-use std::ops::{Index, Range};
 use std::iter::{repeat, FromIterator};
+use std::ops::{Index, Range};
 
 /// A `Nested` item when `T: Collection`
 pub type Item<T> = <T as Index<Range<usize>>>::Output;

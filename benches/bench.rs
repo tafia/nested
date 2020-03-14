@@ -3,8 +3,8 @@
 extern crate nested;
 extern crate test;
 
-use test::Bencher;
 use nested::Nested;
+use test::Bencher;
 
 /// A function which reads src/lib.rs and return a String.
 ///
@@ -24,7 +24,8 @@ fn src_lib() -> String {
 fn bench_vec_string(b: &mut Bencher) {
     let src = src_lib();
     b.iter(|| {
-        let words = src.split_whitespace()
+        let words = src
+            .split_whitespace()
             .map(|s| s.to_string())
             .collect::<Vec<_>>();
         assert!(words.len() > 1000)
@@ -44,7 +45,8 @@ fn bench_nested_string(b: &mut Bencher) {
 fn bench_vec_string_iter(b: &mut Bencher) {
     let src = src_lib();
     b.iter(|| {
-        let words = src.split_whitespace()
+        let words = src
+            .split_whitespace()
             .map(|s| s.to_string())
             .collect::<Vec<_>>();
         assert!(words.len() > 1000);
