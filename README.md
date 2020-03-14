@@ -50,10 +50,10 @@ See benches directory.
 Here are the benches for collecting all words in src/lib.rs file:
 
 ```
-test bench_nested_string      ... bench:      92,909 ns/iter (+/- 17,258)
-test bench_nested_string_iter ... bench:     110,710 ns/iter (+/- 13,485)
-test bench_vec_string         ... bench:     159,431 ns/iter (+/- 37,868)
-test bench_vec_string_iter    ... bench:     173,718 ns/iter (+/- 14,779)
+test bench_nested_string      ... bench:      55,381 ns/iter (+/- 7,852)
+test bench_nested_string_iter ... bench:      95,127 ns/iter (+/- 8,253)
+test bench_vec_string         ... bench:     117,203 ns/iter (+/- 13,089)
+test bench_vec_string_iter    ... bench:     142,245 ns/iter (+/- 24,701)
 ```
 
 ## Licence
