@@ -145,6 +145,33 @@ impl<T: Collection> Nested<T> {
         self.indices.push(len);
     }
 
+    /// Pushes to the last [`Collection`] in this [`Nested`].
+    ///
+    /// # Panics
+    /// Panics when the [`Nested`] is empty, i.e. does not contain any [`Collection`].
+    ///
+    /// # Examples
+    /// ```
+    /// # use nested::Nested;
+    /// let mut n = Nested::<String>::new();
+    /// 
+    /// n.push("123");
+    /// 
+    /// n.push("abc");
+    /// n.push_last("def");
+    /// 
+    /// assert_eq!(n.iter().collect::<Vec<_>>(), vec!["123", "abcdef"]);
+    /// ```
+    pub fn push_last<I: AsRef<Item<T>>>(&mut self, el: I) {
+        if self.indices.len() < 2 {
+            panic!("no collection to push to");
+        }
+
+        self.data.extend_from_slice(el.as_ref());
+        let last_mut = self.indices.last_mut().expect("unreachable: index.len > 2");
+        *last_mut = self.data.len();
+    }
+
     /// Removes the last element from a `Nested` and returns it, or None if it is empty.
     pub fn pop(&mut self) -> Option<T> {
         if self.indices.len() > 1 {
